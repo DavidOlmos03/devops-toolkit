@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: n8n
+      POSTGRES_USER: n8n
+      POSTGRES_PASSWORD: n8n123
+    volumes:
+      - n8n_pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+
+volumes:
+  n8n_pgdata:
+
+networks:
+  backend:
+    external: true
