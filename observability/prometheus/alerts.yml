@@ -1,0 +1,40 @@
+groups:
+  - name: node
+    rules:
+      - alert: HighCpuUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU alto en {{ $labels.instance }}"
+          description: "Uso de CPU por encima del 85% durante 5 minutos."
+
+      - alert: HighMemoryUsage
+        expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memoria alta en {{ $labels.instance }}"
+          description: "Uso de memoria por encima del 85% durante 5 minutos."
+
+      - alert: DiskSpaceLow
+        expr: (1 - node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disco casi lleno en {{ $labels.instance }}"
+          description: "Menos del 10% de espacio libre en {{ $labels.mountpoint }}."
+
+  - name: containers
+    rules:
+      - alert: ContainerDown
+        expr: absent(container_last_seen{name!=""})
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Contenedor caido"
+          description: "No se detectan contenedores activos."

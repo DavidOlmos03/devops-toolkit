@@ -1,0 +1,7 @@
+# Red compartida entre todos los stacks.
+# Crear manualmente antes de levantar los servicios:
+#   docker network create proxy
+
+networks:
+  proxy:
+    external: true
