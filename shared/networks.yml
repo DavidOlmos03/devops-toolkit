@@ -1,4 +1,4 @@
-# Red compartida entre todos los stacks.
+# Red compartida entre algunos de los stacks.
 # Crear manualmente antes de levantar los servicios:
 #   docker network create proxy
 
